@@ -717,6 +717,23 @@ it_retains_tags_with_clean_tags_param() {
   test "$(git -C $dest tag)" == $tag
 }
 
+it_can_get_ref_only() {
+  local repo=$(init_repo)
+  local ref1=$(make_commit $repo)
+
+  local dest=$TMPDIR/destination
+  get_uri_ref_only $repo $dest
+
+  # echo "Testing existance of 'sha' file"
+  test -e "$dest/sha"
+  # echo "Testing contents of 'sha' file"
+  # echo "Should be: $ref1"
+  # echo "Is:"
+  # cat $dest/sha
+  test "$(cat $dest/sha)" == "$ref1"
+}
+
+
 run it_can_use_submodules_with_missing_paths
 run it_can_use_submodules_with_names_that_arent_paths
 run it_can_use_submodules_without_perl_warning
@@ -753,3 +770,4 @@ run it_decrypts_git_crypted_files
 run it_clears_tags_with_clean_tags_param
 run it_retains_tags_by_default
 run it_retains_tags_with_clean_tags_param
+run it_can_get_ref_only

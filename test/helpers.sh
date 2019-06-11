@@ -478,6 +478,18 @@ get_uri_disable_lfs() {
   }" | ${resource_dir}/in "$2" | tee /dev/stderr
 }
 
+get_uri_ref_only() {
+  jq -n "{
+    source: {
+      uri: $(echo $1 | jq -R .),
+    },
+    params: {
+      short_ref_format: \"test-%s\",
+      ref_only: \"true\"
+    }
+  }" | ${resource_dir}/in "$2" | tee /dev/stderr
+}
+
 get_uri_with_branch() {
   jq -n "{
     source: {
